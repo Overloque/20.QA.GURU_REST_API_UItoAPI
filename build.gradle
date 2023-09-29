@@ -1,0 +1,25 @@
+plugins {
+    id 'java-library'
+}
+
+group = 'in.reqres'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation (
+            'org.junit.jupiter:junit-jupiter:5.9.3',
+            'io.rest-assured:rest-assured:5.1.0'
+    )
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+test {
+    useJUnitPlatform()
+}
