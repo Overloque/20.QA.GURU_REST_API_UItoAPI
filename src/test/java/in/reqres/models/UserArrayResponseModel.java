@@ -9,11 +9,11 @@ import java.util.ArrayList;
 public class UserArrayResponseModel {
     private int page, total;
 
-    @JsonProperty("perPage")
-    private int per_page;
+    @JsonProperty("per_page")
+    private int perPage;
 
-    @JsonProperty("totalPages")
-    private int total_pages;
+    @JsonProperty("total_pages")
+    private int totalPages;
 
     private ArrayList<UserResponseModel> data;
     private UserSupportModel support;

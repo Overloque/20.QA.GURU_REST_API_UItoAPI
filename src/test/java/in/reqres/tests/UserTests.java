@@ -25,11 +25,11 @@ public class UserTests {
 
         step("Проверка полей пользователей", () -> {
             assertThat(response.getPage(), equalTo(2));
-            assertThat(response.getPer_page(), equalTo(6));
+            assertThat(response.getPerPage(), equalTo(6));
             assertThat(response.getTotal(), equalTo(12));
-            assertThat(response.getTotal_pages(), equalTo(2));
+            assertThat(response.getTotalPages(), equalTo(2));
             assertThat(response.getData().stream().findFirst().get().getEmail(), equalTo("michael.lawson@reqres.in"));
-            assertThat(response.getData().get(0).getFirst_name(), equalTo("Michael"));
+            assertThat(response.getData().get(0).getFirstName(), equalTo("Michael"));
         });
     }
 
@@ -47,8 +47,8 @@ public class UserTests {
         step("Проверка полей пользователя", () -> {
             assertThat(response.getData().getId(), equalTo(2));
             assertThat(response.getData().getEmail(), equalTo("janet.weaver@reqres.in"));
-            assertThat(response.getData().getFirst_name(), equalTo("Janet"));
-            assertThat(response.getData().getLast_name(), equalTo("Weaver"));
+            assertThat(response.getData().getFirstName(), equalTo("Janet"));
+            assertThat(response.getData().getLastName(), equalTo("Weaver"));
             assertThat(response.getData().getAvatar(), equalTo("https://reqres.in/img/faces/2-image.jpg"));
             assertThat(response.getSupport().getUrl(), equalTo("https://reqres.in/#support-heading"));
             assertThat(response.getSupport().getText(), equalTo("To keep ReqRes free, contributions towards server costs are appreciated!"));

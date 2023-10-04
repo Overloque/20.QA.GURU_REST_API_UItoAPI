@@ -12,5 +12,5 @@ public class UserResponseModel {
     private String firstName;
 
     @JsonProperty("last_name")
-    private String last_name;
+    private String lastName;
 }
