@@ -1,35 +1,34 @@
-package in.reqres.specs;
+package qa.demo.specs;
 
-import in.reqres.tests.BaseTest;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 
-import static in.reqres.helpers.CustomAllureListener.withCustomTemplates;
+import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.with;
 import static io.restassured.filter.log.LogDetail.BODY;
 import static io.restassured.filter.log.LogDetail.STATUS;
 import static io.restassured.http.ContentType.JSON;
+import static qa.demo.helpers.CustomAllureListener.withCustomTemplates;
 
-public class LoginSpec extends BaseTest {
-    public static RequestSpecification loginRequestSpec = with()
+public class BookSpec {
+    public static RequestSpecification commonBookSpec = with()
             .filter(withCustomTemplates())
             .log().uri()
-            .log().method()
             .log().body()
+            .log().method()
             .contentType(JSON)
-            .baseUri(config.baseUrl())
-            .basePath(config.basePath());
+            .baseUri(baseURI);
 
-    public static ResponseSpecification loginSuccessResponseSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification addBookResponseSpec = new ResponseSpecBuilder()
             .log(STATUS)
             .log(BODY)
-            .expectStatusCode(200)
+            .expectStatusCode(201)
             .build();
 
-    public static ResponseSpecification loginErrorResponseSpec = new ResponseSpecBuilder()
+    public static ResponseSpecification removingBookResponseSpec = new ResponseSpecBuilder()
             .log(STATUS)
             .log(BODY)
-            .expectStatusCode(400)
+            .expectStatusCode(204)
             .build();
 }
