@@ -1,4 +1,4 @@
-package qa.demo.models;
+package qa.demo.models.authorization;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

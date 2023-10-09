@@ -9,6 +9,7 @@ import qa.demo.api.LoginApi;
 public class BaseTest {
     LoginApi loginApi = new LoginApi();
     BookApi bookApi = new BookApi();
+
     @BeforeAll
     static void beforeAll() {
         Configuration.baseUrl = "https://demoqa.com";

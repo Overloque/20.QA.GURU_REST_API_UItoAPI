@@ -1,4 +1,4 @@
-package qa.demo.models;
+package qa.demo.models.authorization;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;

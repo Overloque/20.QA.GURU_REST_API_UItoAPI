@@ -1,4 +1,4 @@
-package qa.demo.models;
+package qa.demo.models.books;
 
 import lombok.Data;
 
@@ -7,5 +7,5 @@ import java.util.List;
 @Data
 public class AddingBookToListModel {
     private String userId;
-    private List<IsbnModel> collection;
+    private List<IsbnModel> collectionOfIsbns;
 }

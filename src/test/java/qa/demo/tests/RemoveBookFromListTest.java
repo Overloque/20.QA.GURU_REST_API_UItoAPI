@@ -1,27 +1,27 @@
 package qa.demo.tests;
 
-import com.codeborne.selenide.Condition;
+import io.qameta.allure.Link;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.Cookie;
-import qa.demo.models.AddingBookToListModel;
-import qa.demo.models.IsbnModel;
-import qa.demo.models.LoginResponseModel;
-import qa.demo.models.RemovingBookFromListModel;
+import qa.demo.models.books.AddingBookToListModel;
+import qa.demo.models.books.IsbnModel;
+import qa.demo.models.authorization.LoginResponseModel;
+import qa.demo.models.books.RemovingBookFromListModel;
+import qa.demo.pages.ProfilePage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
-import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
+import static io.qameta.allure.Allure.step;
 import static qa.demo.utils.TestData.*;
 
 public class RemoveBookFromListTest extends BaseTest {
     @Test
     @DisplayName("Проверка удаления книги из списка")
+    @Link(value = "demoqa", url = "https://demoqa.com/profile")
     void checkSuccessfulRemoveBookFromListTest() {
+        ProfilePage profilePage = new ProfilePage();
+
         LoginResponseModel response = loginApi.login(creds);
 
         IsbnModel isbnModel = new IsbnModel();
@@ -32,12 +32,26 @@ public class RemoveBookFromListTest extends BaseTest {
 
         AddingBookToListModel booksList = new AddingBookToListModel();
         booksList.setUserId(response.getUserId());
-        booksList.setCollection(collectionIsbn);
+        booksList.setCollectionOfIsbns(collectionIsbn);
 
-//        RemovingBookFromListModel removingBooksList = new RemovingBookFromListModel();
-//        removingBooksList.setIsbn(bookId);
-//        removingBooksList.setUserId(response.getUserId());
+        RemovingBookFromListModel removingBooksList = new RemovingBookFromListModel();
+        removingBooksList.setIsbn(bookId);
+        removingBooksList.setUserId(response.getUserId());
 
+        bookApi.removeAllBooks(response);
         bookApi.addBook(response, booksList);
+        bookApi.removeBook(response, removingBooksList);
+
+        step("Добавление куков на сайт", () -> {
+            profilePage.addCookies(response);
+        });
+
+        step("Открытие страницы профиля", () -> {
+            profilePage.openProfilePage();
+        });
+
+        step("Проверка удаленной из списка книги", () -> {
+            profilePage.checkEmptyTable();
+        });
     }
 }
