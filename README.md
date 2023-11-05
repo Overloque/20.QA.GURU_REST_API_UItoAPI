@@ -1,5 +1,5 @@
 # Проект по автоматизации API методов для сайта [DemoQA](https://demoqa.com)
-<p align="center"><a href="https://www.tinkoff.ru"><img src="images/logo/Toolsqa.jpg" align="center" width="400" height="150"  alt="Java"/></a></p>  
+<p align="center"><a href="https://demoqa.com"><img src="images/logo/Toolsqa.jpg" align="center" width="400" height="100"  alt="Java"/></a></p>  
 
 > DemoQA — демонстрационный сайт для инженеров по контролю качества, созданный компанией Tools QA.
 >
