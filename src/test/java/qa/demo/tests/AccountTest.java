@@ -5,6 +5,7 @@ import io.qameta.allure.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import qa.demo.api.AccountApi;
 import qa.demo.models.authorization.GenerateTokenResponseModel;
 import qa.demo.models.authorization.LoginResponseModel;
 import qa.demo.models.authorization.RegisterSuccessResponseModel;
@@ -21,6 +22,8 @@ import static qa.demo.utils.TestDataVariables.*;
 @Owner("Overloque")
 @Tag("account")
 public class AccountTest extends BaseTest {
+    AccountApi accountApi = new AccountApi();
+
     @Test
     @Severity(CRITICAL)
     @DisplayName("Проверка удаления аккаунта")
