@@ -123,7 +123,7 @@ flowchart LR
 
 ---
 
-## <img src="images/logo/AllureTestOps.svg" width="50" height="50"/> Интеграция с [Allure TestOps](https://allure.autotests.cloud/project/3675/dashboards)
+## <img src="images/logo/AllureTestOps.svg" width="50" height="50"/> Интеграция с [Allure TestOps](https://allure.autotests.cloud/project/3754/dashboards)
 
 ### Dashboard
 
