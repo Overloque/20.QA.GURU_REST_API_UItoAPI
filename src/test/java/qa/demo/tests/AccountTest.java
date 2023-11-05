@@ -10,7 +10,7 @@ import qa.demo.models.authorization.GenerateTokenResponseModel;
 import qa.demo.models.authorization.LoginResponseModel;
 import qa.demo.models.authorization.RegisterSuccessResponseModel;
 
-import static com.codeborne.selenide.logevents.SelenideLogger.step;
+import static io.qameta.allure.Allure.step;
 import static io.qameta.allure.SeverityLevel.CRITICAL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

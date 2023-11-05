@@ -6,23 +6,18 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import qa.demo.api.BookApi;
-import qa.demo.models.authorization.GenerateTokenResponseModel;
 import qa.demo.models.authorization.LoginResponseModel;
-import qa.demo.models.authorization.RegisterSuccessResponseModel;
 import qa.demo.models.books.AddingBookToListModel;
 import qa.demo.models.books.GetBookModel;
 import qa.demo.models.books.IsbnModel;
 import qa.demo.models.books.RemovingBookFromListModel;
-import qa.demo.utils.TestDataVariables;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.codeborne.selenide.logevents.SelenideLogger.step;
-import static io.qameta.allure.SeverityLevel.CRITICAL;
+import static io.qameta.allure.Allure.step;
 import static io.qameta.allure.SeverityLevel.NORMAL;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static qa.demo.utils.TestDataVariables.*;
 import static qa.demo.utils.TestDataVariables.bookId;
 
