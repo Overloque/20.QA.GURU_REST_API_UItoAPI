@@ -17,7 +17,7 @@ import static qa.demo.utils.TestDataVariables.*;
 
 @Epic(value = "Проверка апи сайта https://demoqa.com")
 @Feature(value = "Проверка методов, связанных с авторизацией/регистрацией")
-@Link(name = "demoqa", value = "https://demoqa.com/")
+@Link(name = "demoqa", value = "https://demoqa.com")
 @Owner("Overloque")
 @Tag("account")
 public class AuthorizationTest extends BaseTest {

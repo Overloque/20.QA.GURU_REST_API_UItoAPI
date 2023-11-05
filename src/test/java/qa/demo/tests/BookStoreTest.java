@@ -23,7 +23,7 @@ import static qa.demo.utils.TestDataVariables.bookId;
 
 @Epic(value = "Проверка апи сайта https://demoqa.com")
 @Feature(value = "Проверка методов, связанных с магазином книг")
-@Link(name = "demoqa", value = "https://demoqa.com/")
+@Link(name = "demoqa", value = "https://demoqa.com")
 @Owner("Overloque")
 @Tag("bookstore")
 public class BookStoreTest extends BaseTest {
