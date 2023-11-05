@@ -97,7 +97,7 @@ flowchart LR
 ### Главная страница отчета
 
 <p align="center">
-<img src="images/screenshots/AllureReport.jpg" alt="Allure report" width="1000" height="400">
+<img src="images/screenshots/AllureReport.jpg" alt="Allure report" width="1000" height="300">
 </p>
 
 ### Тест-кейсы
