@@ -38,51 +38,29 @@ public class BookStoreTest extends BaseTest {
 
         step("Вызов метода авторизации", () -> {
             LoginResponseModel response = authorizationApi.login(existCreds);
-            System.setProperty("response", new Gson().toJson(response));
-        });
 
-        step("Подготовка данных для действий по удалению/добавлению книги", () -> {
-            String responseJson = System.getProperty("response");
-            LoginResponseModel response = new Gson().fromJson(responseJson, LoginResponseModel.class);
+            step("Подготовка данных для действий по удалению/добавлению книги", () -> {
+                IsbnModel isbnModel = new IsbnModel(bookId);
 
-            IsbnModel isbnModel = new IsbnModel(bookId);
+                List<IsbnModel> collectionIsbn = new ArrayList<>();
+                collectionIsbn.add(isbnModel);
 
-            List<IsbnModel> collectionIsbn = new ArrayList<>();
-            collectionIsbn.add(isbnModel);
+                AddingBookToListModel booksList = new AddingBookToListModel(response.getUserId(), collectionIsbn);
 
-            AddingBookToListModel booksList = new AddingBookToListModel(response.getUserId(), collectionIsbn);
+                RemovingBookFromListModel removingBooksList = new RemovingBookFromListModel(bookId, response.getUserId());
 
-            RemovingBookFromListModel removingBooksList = new RemovingBookFromListModel(bookId, response.getUserId());
+                step("Вызов метода для удаления всех книг", () -> {
+                    bookApi.removeAllBooks(response);
+                });
 
-            System.setProperty("booksList", new Gson().toJson(booksList));
-            System.setProperty("removingBooksList", new Gson().toJson(removingBooksList));
-        });
+                step("Вызов метода для удаления всех книг", () -> {
+                    bookApi.addBook(response, booksList);
+                });
 
-        step("Вызов метода для удаления всех книг", () -> {
-            String responseJson = System.getProperty("response");
-            LoginResponseModel response = new Gson().fromJson(responseJson, LoginResponseModel.class);
-
-            bookApi.removeAllBooks(response);
-        });
-
-        step("Вызов метода для удаления всех книг", () -> {
-            String responseJson = System.getProperty("response");
-            String booksListJson = System.getProperty("booksList");
-
-            LoginResponseModel response = new Gson().fromJson(responseJson, LoginResponseModel.class);
-            AddingBookToListModel booksList = new Gson().fromJson(booksListJson, AddingBookToListModel.class);
-
-            bookApi.addBook(response, booksList);
-        });
-
-        step("Вызов метода удаления одной книги", () -> {
-            String responseJson = System.getProperty("response");
-            String removingBooksListJson = System.getProperty("removingBooksList");
-
-            LoginResponseModel response = new Gson().fromJson(responseJson, LoginResponseModel.class);
-            RemovingBookFromListModel removingBooksList = new Gson().fromJson(removingBooksListJson, RemovingBookFromListModel.class);
-
-            bookApi.removeBook(response, removingBooksList);
+                step("Вызов метода удаления одной книги", () -> {
+                    bookApi.removeBook(response, removingBooksList);
+                });
+            });
         });
     }
 
@@ -98,32 +76,28 @@ public class BookStoreTest extends BaseTest {
 
         step("Вызов метода получения книги", () -> {
             GetBookModel response = bookApi.getBook(bookId);
-            System.setProperty("response", new Gson().toJson(response));
-        });
 
-        step("Проверка полей у книги", () -> {
-            String responseJson = System.getProperty("response");
-            GetBookModel response = new Gson().fromJson(responseJson, GetBookModel.class);
+            step("Проверка полей у книги", () -> {
+                assertThat(response.getAuthor())
+                        .as("Автор книги")
+                        .isEqualTo("Richard E. Silverman");
 
-            assertThat(response.getAuthor())
-                    .as("Автор книги")
-                    .isEqualTo("Richard E. Silverman");
+                assertThat(response.getPublishDate())
+                        .as("Дата публикации книги")
+                        .isEqualTo("2020-06-04T08:48:39.000Z");
 
-            assertThat(response.getPublishDate())
-                    .as("Дата публикации книги")
-                    .isEqualTo("2020-06-04T08:48:39.000Z");
+                assertThat(response.getPublisher())
+                        .as("Издатель")
+                        .isEqualTo("O'Reilly Media");
 
-            assertThat(response.getPublisher())
-                    .as("Издатель")
-                    .isEqualTo("O'Reilly Media");
+                assertThat(response.getTitle())
+                        .as("Название книги")
+                        .isEqualTo("Git Pocket Guide");
 
-            assertThat(response.getTitle())
-                    .as("Название книги")
-                    .isEqualTo("Git Pocket Guide");
-
-            assertThat(response.getWebsite())
-                    .as("Вебсайт")
-                    .isEqualTo("http://chimera.labs.oreilly.com/books/1230000000561/index.html");
+                assertThat(response.getWebsite())
+                        .as("Вебсайт")
+                        .isEqualTo("http://chimera.labs.oreilly.com/books/1230000000561/index.html");
+            });
         });
     }
 }

@@ -30,26 +30,22 @@ public class AuthorizationTest extends BaseTest {
 
         step("Вызов метода авторизации", () -> {
             LoginResponseModel response = authorizationApi.login(existCreds);
-            System.setProperty("response", new Gson().toJson(response));
-        });
 
-        step("Проверка полей username, password, userId, created_date", () -> {
-            String responseJson = System.getProperty("response");
-            LoginResponseModel response = new Gson().fromJson(responseJson, LoginResponseModel.class);
+            step("Проверка полей username, password, userId, created_date", () -> {
+                assertThat(response.getUserId())
+                        .as("Уникальный идентификатор пользователя")
+                        .isEqualTo("e889fb62-ddce-411a-a406-76e38d3c66b8");
 
-            assertThat(response.getUserId())
-                    .as("Уникальный идентификатор пользователя")
-                    .isEqualTo("e889fb62-ddce-411a-a406-76e38d3c66b8");
+                assertThat(response.getUsername())
+                        .as("Имя пользователя")
+                        .isEqualTo("TestDemoUser1");
 
-            assertThat(response.getUsername())
-                    .as("Имя пользователя")
-                    .isEqualTo("TestDemoUser1");
+                assertThat(response.getPassword())
+                        .as("Пароль пользователя")
+                        .isEqualTo("TestDemoUser1!");
 
-            assertThat(response.getPassword())
-                    .as("Пароль пользователя")
-                    .isEqualTo("TestDemoUser1!");
-
-            assertNotNull(response.getCreatedDate());
+                assertNotNull(response.getCreatedDate());
+            });
         });
     }
 
@@ -59,16 +55,12 @@ public class AuthorizationTest extends BaseTest {
     void checkSuccessRegisterTest() {
         step("Вызов метода регистрации", () -> {
             RegisterSuccessResponseModel response = authorizationApi.registerSuccess(randomCreds);
-            System.setProperty("response", new Gson().toJson(response));
-        });
 
-        step("Проверка полей userId, books, username", () -> {
-            String responseJson = System.getProperty("response");
-            RegisterSuccessResponseModel response = new Gson().fromJson(responseJson, RegisterSuccessResponseModel.class);
-
-            assertNotNull(response.getUserId());
-            assertNotNull(response.getBooks());
-            assertNotNull(response.getUsername());
+            step("Проверка полей userId, books, username", () -> {
+                assertNotNull(response.getUserId());
+                assertNotNull(response.getBooks());
+                assertNotNull(response.getUsername());
+            });
         });
     }
 
@@ -78,20 +70,16 @@ public class AuthorizationTest extends BaseTest {
     void checkErrorRegisterTest() {
         step("Вызов метода регистрации", () -> {
             RegisterErrorResponseModel response = authorizationApi.registerError(existCreds);
-            System.setProperty("response", new Gson().toJson(response));
-        });
 
-        step("Проверка полей userId, books, username", () -> {
-            String responseJson = System.getProperty("response");
-            RegisterErrorResponseModel response = new Gson().fromJson(responseJson, RegisterErrorResponseModel.class);
+            step("Проверка полей userId, books, username", () -> {
+                assertThat(response.getCode())
+                        .as("Код ошибки")
+                        .isEqualTo("1204");
 
-            assertThat(response.getCode())
-                    .as("Код ошибки")
-                    .isEqualTo("1204");
-
-            assertThat(response.getMessage())
-                    .as("Сообщение ошибки")
-                    .isEqualTo("User exists!");
+                assertThat(response.getMessage())
+                        .as("Сообщение ошибки")
+                        .isEqualTo("User exists!");
+            });
         });
     }
 }

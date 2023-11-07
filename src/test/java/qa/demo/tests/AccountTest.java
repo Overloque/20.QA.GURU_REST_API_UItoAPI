@@ -30,46 +30,35 @@ public class AccountTest extends BaseTest {
     void checkSuccessRegisterTest() {
         step("Вызов метода регистрации", () -> {
             RegisterSuccessResponseModel response = authorizationApi.registerSuccess(randomCreds);
-            System.setProperty("response", new Gson().toJson(response));
-        });
 
-        step("Проверка полей userId, books, username", () -> {
-            String responseJson = System.getProperty("response");
-            RegisterSuccessResponseModel response = new Gson().fromJson(responseJson, RegisterSuccessResponseModel.class);
+            step("Проверка полей userId, books, username", () -> {
+                assertNotNull(response.getUserId());
+                assertNotNull(response.getBooks());
+                assertNotNull(response.getUsername());
+            });
 
-            assertNotNull(response.getUserId());
-            assertNotNull(response.getBooks());
-            assertNotNull(response.getUsername());
-        });
+            step("Вызова метода для генерации токена пользователя", () ->
+                    authorizationApi.generateToken(randomCreds));
 
-        step("Вызова метода для генерации токена пользователя", () ->
-                authorizationApi.generateToken(randomCreds));
+            step("Вызов метода авторизации для нового пользователя", () -> {
+                LoginResponseModel loginResponseModel = authorizationApi.login(randomCreds);
 
-        step("Вызов метода авторизации для нового пользователя", () -> {
-            LoginResponseModel loginResponseModel = authorizationApi.login(randomCreds);
-            System.setProperty("responseLogin", new Gson().toJson(loginResponseModel));
-        });
+                step("Удаление созданного аккаунта", () -> {
+                    accountApi.removeAccount(response, loginResponseModel);
+                });
+            });
 
-        step("Удаление созданного аккаунта", () -> {
-            String responseJson = System.getProperty("response");
-            String responseJsonLogin = System.getProperty("responseLogin");
+            step("Проверка сообщения и статуса при попытке входа на удаленный аккаунт", () -> {
+                GenerateTokenResponseModel generateTokenResponse = authorizationApi.generateToken(randomCreds);
 
-            RegisterSuccessResponseModel response = new Gson().fromJson(responseJson, RegisterSuccessResponseModel.class);
-            LoginResponseModel responseLogin = new Gson().fromJson(responseJsonLogin, LoginResponseModel.class);
+                assertThat(generateTokenResponse.getResult())
+                        .as("Соообщение об ошибке")
+                        .isEqualTo("User authorization failed.");
 
-            accountApi.removeAccount(response, responseLogin);
-        });
-
-        step("Проверка сообщения и статуса при попытке входа на удаленный аккаунт", () -> {
-            GenerateTokenResponseModel generateTokenResponse = authorizationApi.generateToken(randomCreds);
-
-            assertThat(generateTokenResponse.getResult())
-                    .as("Соообщение об ошибке")
-                    .isEqualTo("User authorization failed.");
-
-            assertThat(generateTokenResponse.getStatus())
-                    .as("Статус генерации токена")
-                    .isEqualTo("Failed");
+                assertThat(generateTokenResponse.getStatus())
+                        .as("Статус генерации токена")
+                        .isEqualTo("Failed");
+            });
         });
     }
 }
