@@ -36,7 +36,7 @@ public class AccountTest extends BaseTest {
             assertNotNull(registerResponse.getUsername());
         });
 
-        final GenerateTokenResponseModel generateResponse = step("Вызова метода для генерации токена пользователя", () ->
+        step("Вызова метода для генерации токена пользователя", () ->
                 authorizationApi.generateToken(randomCreds));
 
         final LoginResponseModel loginResponse = step("Вызов метода авторизации для нового пользователя", () ->
