@@ -1,6 +1,5 @@
 package qa.demo.tests;
 
-import com.google.gson.Gson;
 import io.qameta.allure.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -28,24 +27,23 @@ public class AuthorizationTest extends BaseTest {
         step("Вызов метода для генерации токена пользователя", () ->
                 authorizationApi.generateToken(existCreds));
 
-        step("Вызов метода авторизации", () -> {
-            LoginResponseModel response = authorizationApi.login(existCreds);
+        final LoginResponseModel loginResponse = step("Вызов метода авторизации", () ->
+                authorizationApi.login(existCreds));
 
-            step("Проверка полей username, password, userId, created_date", () -> {
-                assertThat(response.getUserId())
-                        .as("Уникальный идентификатор пользователя")
-                        .isEqualTo("e889fb62-ddce-411a-a406-76e38d3c66b8");
+        step("Проверка полей username, password, userId, created_date", () -> {
+            assertThat(loginResponse.getUserId())
+                    .as("Уникальный идентификатор пользователя")
+                    .isEqualTo("e889fb62-ddce-411a-a406-76e38d3c66b8");
 
-                assertThat(response.getUsername())
-                        .as("Имя пользователя")
-                        .isEqualTo("TestDemoUser1");
+            assertThat(loginResponse.getUsername())
+                    .as("Имя пользователя")
+                    .isEqualTo("TestDemoUser1");
 
-                assertThat(response.getPassword())
-                        .as("Пароль пользователя")
-                        .isEqualTo("TestDemoUser1!");
+            assertThat(loginResponse.getPassword())
+                    .as("Пароль пользователя")
+                    .isEqualTo("TestDemoUser1!");
 
-                assertNotNull(response.getCreatedDate());
-            });
+            assertNotNull(loginResponse.getCreatedDate());
         });
     }
 
@@ -53,14 +51,13 @@ public class AuthorizationTest extends BaseTest {
     @Severity(CRITICAL)
     @DisplayName("Проверка полей после успешной регистрации")
     void checkSuccessRegisterTest() {
-        step("Вызов метода регистрации", () -> {
-            RegisterSuccessResponseModel response = authorizationApi.registerSuccess(randomCreds);
+        final RegisterSuccessResponseModel registerResponse = step("Вызов метода регистарции", () ->
+                authorizationApi.registerSuccess(randomCreds));
 
-            step("Проверка полей userId, books, username", () -> {
-                assertNotNull(response.getUserId());
-                assertNotNull(response.getBooks());
-                assertNotNull(response.getUsername());
-            });
+        step("Проверка полей userId, books, username", () -> {
+            assertNotNull(registerResponse.getUserId());
+            assertNotNull(registerResponse.getBooks());
+            assertNotNull(registerResponse.getUsername());
         });
     }
 
@@ -68,18 +65,17 @@ public class AuthorizationTest extends BaseTest {
     @Severity(CRITICAL)
     @DisplayName("Проверка сообщения после регистрации под существующим пользователем")
     void checkErrorRegisterTest() {
-        step("Вызов метода регистрации", () -> {
-            RegisterErrorResponseModel response = authorizationApi.registerError(existCreds);
+        final RegisterErrorResponseModel registerResponseError = step("Вызов метода регистрации существующего пользователя", () ->
+                authorizationApi.registerError(existCreds));
 
-            step("Проверка полей userId, books, username", () -> {
-                assertThat(response.getCode())
-                        .as("Код ошибки")
-                        .isEqualTo("1204");
+        step("Проверка полей userId, books, username", () -> {
+            assertThat(registerResponseError.getCode())
+                    .as("Код ошибки")
+                    .isEqualTo("1204");
 
-                assertThat(response.getMessage())
-                        .as("Сообщение ошибки")
-                        .isEqualTo("User exists!");
-            });
+            assertThat(registerResponseError.getMessage())
+                    .as("Сообщение ошибки")
+                    .isEqualTo("User exists!");
         });
     }
 }

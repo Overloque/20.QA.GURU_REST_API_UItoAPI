@@ -1,6 +1,5 @@
 package qa.demo.tests;
 
-import com.google.gson.Gson;
 import io.qameta.allure.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -28,37 +27,36 @@ public class AccountTest extends BaseTest {
     @Severity(CRITICAL)
     @DisplayName("Проверка удаления аккаунта")
     void checkSuccessRegisterTest() {
-        step("Вызов метода регистрации", () -> {
-            RegisterSuccessResponseModel response = authorizationApi.registerSuccess(randomCreds);
+        final RegisterSuccessResponseModel registerResponse = step("Вызов метода регистарции", () ->
+                authorizationApi.registerSuccess(randomCreds));
 
-            step("Проверка полей userId, books, username", () -> {
-                assertNotNull(response.getUserId());
-                assertNotNull(response.getBooks());
-                assertNotNull(response.getUsername());
-            });
+        step("Проверка полей userId, books, username", () -> {
+            assertNotNull(registerResponse.getUserId());
+            assertNotNull(registerResponse.getBooks());
+            assertNotNull(registerResponse.getUsername());
+        });
 
-            step("Вызова метода для генерации токена пользователя", () ->
-                    authorizationApi.generateToken(randomCreds));
+        final GenerateTokenResponseModel generateResponse = step("Вызова метода для генерации токена пользователя", () ->
+                authorizationApi.generateToken(randomCreds));
 
-            step("Вызов метода авторизации для нового пользователя", () -> {
-                LoginResponseModel loginResponseModel = authorizationApi.login(randomCreds);
+        final LoginResponseModel loginResponse = step("Вызов метода авторизации для нового пользователя", () ->
+                authorizationApi.login(randomCreds));
 
-                step("Удаление созданного аккаунта", () -> {
-                    accountApi.removeAccount(response, loginResponseModel);
-                });
-            });
+        step("Удаление созданного аккаунта", () -> {
+            accountApi.removeAccount(registerResponse, loginResponse);
+        });
 
-            step("Проверка сообщения и статуса при попытке входа на удаленный аккаунт", () -> {
-                GenerateTokenResponseModel generateTokenResponse = authorizationApi.generateToken(randomCreds);
+        final GenerateTokenResponseModel generateNewResponse = step("Вызова метода для генерации токена того же пользователя", () ->
+                authorizationApi.generateToken(randomCreds));
 
-                assertThat(generateTokenResponse.getResult())
-                        .as("Соообщение об ошибке")
-                        .isEqualTo("User authorization failed.");
+        step("Проверка сообщения и статуса при попытке входа на удаленный аккаунт", () -> {
+            assertThat(generateNewResponse.getResult())
+                    .as("Соообщение об ошибке")
+                    .isEqualTo("User authorization failed.");
 
-                assertThat(generateTokenResponse.getStatus())
-                        .as("Статус генерации токена")
-                        .isEqualTo("Failed");
-            });
+            assertThat(generateNewResponse.getStatus())
+                    .as("Статус генерации токена")
+                    .isEqualTo("Failed");
         });
     }
 }
