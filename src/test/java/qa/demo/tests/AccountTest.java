@@ -46,15 +46,15 @@ public class AccountTest extends BaseTest {
             accountApi.removeAccount(registerResponse, loginResponse);
         });
 
-        final GenerateTokenResponseModel generateNewResponse = step("Вызова метода для генерации токена того же пользователя", () ->
+        final GenerateTokenResponseModel generateResponse = step("Вызова метода для генерации токена того же пользователя", () ->
                 authorizationApi.generateToken(randomCreds));
 
         step("Проверка сообщения и статуса при попытке входа на удаленный аккаунт", () -> {
-            assertThat(generateNewResponse.getResult())
+            assertThat(generateResponse.getResult())
                     .as("Соообщение об ошибке")
                     .isEqualTo("User authorization failed.");
 
-            assertThat(generateNewResponse.getStatus())
+            assertThat(generateResponse.getStatus())
                     .as("Статус генерации токена")
                     .isEqualTo("Failed");
         });
