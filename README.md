@@ -85,7 +85,7 @@ ${TASK}
 flowchart LR
     A[Test Suite] --> B[Все тесты] --> C[test]
     A --> D[Аккаунт] --> E[account_test]
-    A --> F[Авторизация/Регистрация'] --> G[authorize_test]
+    A --> F[Авторизация/Регистрация] --> G[authorize_test]
     A --> H[Книжный магазин] --> I[bookstore_test]
 ```
 
